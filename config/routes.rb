@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
   scope '/api' do
-    resources :establecimiento_productos, except: [:new, :edit]
-    resources :establecimientos, except: [:new, :edit]
-    resources :distritos, except: [:new, :edit]
-    resources :regions, except: [:new, :edit]
     resources :productos, except: [:new, :edit]
+    resources :regiones, except: [:new, :edit]
+    resources :distritos, except: [:new, :edit]
+    resources :establecimientos, except: [:new, :edit]
+    resources :disponibles, except: [:new, :edit]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

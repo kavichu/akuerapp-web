@@ -1,22 +1,22 @@
-class RegionsController < ApplicationController
+class RegionesController < ApplicationController
   before_action :set_region, only: [:show, :update, :destroy]
 
-  # GET /regions
-  # GET /regions.json
+  # GET /regiones
+  # GET /regiones.json
   def index
-    @regions = Region.all
+    @regiones = Region.all
 
-    render json: @regions
+    render json: @regiones
   end
 
-  # GET /regions/1
-  # GET /regions/1.json
+  # GET /regiones/1
+  # GET /regiones/1.json
   def show
     render json: @region
   end
 
-  # POST /regions
-  # POST /regions.json
+  # POST /regiones
+  # POST /regiones.json
   def create
     @region = Region.new(region_params)
 
@@ -27,8 +27,8 @@ class RegionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /regions/1
-  # PATCH/PUT /regions/1.json
+  # PATCH/PUT /regiones/1
+  # PATCH/PUT /regiones/1.json
   def update
     @region = Region.find(params[:id])
 
@@ -39,8 +39,8 @@ class RegionsController < ApplicationController
     end
   end
 
-  # DELETE /regions/1
-  # DELETE /regions/1.json
+  # DELETE /regiones/1
+  # DELETE /regiones/1.json
   def destroy
     @region.destroy
 

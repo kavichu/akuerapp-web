@@ -11,18 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031042514) do
+ActiveRecord::Schema.define(version: 20151031113636) do
 
-  create_table "distritos", force: :cascade do |t|
-    t.string   "region"
-    t.string   "nombre"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "establecimiento_productos", force: :cascade do |t|
-    t.string   "producto"
-    t.string   "establecimiento"
+  create_table "disponibles", force: :cascade do |t|
+    t.integer  "producto_id"
+    t.integer  "establecimiento_id"
     t.string   "disponible"
     t.string   "fecha"
     t.string   "periodicidad"
@@ -33,13 +26,29 @@ ActiveRecord::Schema.define(version: 20151031042514) do
     t.datetime "updated_at",              null: false
   end
 
-  create_table "establecimientos", force: :cascade do |t|
+  add_index "disponibles", ["establecimiento_id"], name: "index_disponibles_on_establecimiento_id"
+  add_index "disponibles", ["producto_id"], name: "index_disponibles_on_producto_id"
+
+  create_table "distritos", force: :cascade do |t|
+    t.integer  "region_id"
+    t.string   "region"
     t.string   "nombre"
-    t.string   "tipo"
-    t.string   "mapa"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "distritos", ["region_id"], name: "index_distritos_on_region_id"
+
+  create_table "establecimientos", force: :cascade do |t|
+    t.integer  "distrito_id"
+    t.string   "nombre"
+    t.string   "tipo"
+    t.string   "mapa"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "establecimientos", ["distrito_id"], name: "index_establecimientos_on_distrito_id"
 
   create_table "productos", force: :cascade do |t|
     t.string   "nombre"
@@ -62,7 +71,7 @@ ActiveRecord::Schema.define(version: 20151031042514) do
     t.datetime "updated_at",                    null: false
   end
 
-  create_table "regions", force: :cascade do |t|
+  create_table "regiones", force: :cascade do |t|
     t.string   "nombre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

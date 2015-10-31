@@ -1,8 +1,9 @@
-class CreateEstablecimientoProductos < ActiveRecord::Migration
+class CreateDisponibles < ActiveRecord::Migration
   def change
-    create_table :establecimiento_productos do |t|
-      t.string :producto
-      t.string :establecimiento
+    create_table :disponibles do |t|
+      t.belongs_to :producto, index: true
+      t.belongs_to :establecimiento, index: true
+
       t.string :disponible
       t.string :fecha
       t.string :periodicidad
