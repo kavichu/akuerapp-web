@@ -1,73 +1,73 @@
 import csv
 import sqlite3
+import json
+
+from datetime import datetime
+
+# load the adapter
+import psycopg2
+
+# load the psycopg extras module
+import psycopg2.extras
+
+# Try to connect
+try:
+    connSQLite3 = sqlite3.connect('/home/luisvaldes/workspace/ruby-workspace/akuerapp_opendata.db')
+    cursorSQLite3 = connSQLite3.cursor()
+
+    conn_string = "host='localhost' dbname='akuerappdb' user='akuerappuser' password='asdf1234'"
+    print ("Connecting to database\n ->%s" % (conn_string))
+    connPostgreSQL = psycopg2.connect(conn_string)
+    connPostgreSQL.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+except Exception as e:
+    print(e)
+    print ("I am unable to connect to the database.")
 
 
+if connPostgreSQL:
+  cursorPostgreSQL = connPostgreSQL.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-# c.execute("SELECT * FROM stocks WHERE symbol = '%s'" % symbol)
-# c.execute('select field1, field2 from establecimientos where field1 not like "nombre%" group by field1, field2 ')
+# Note that below we are accessing the row via the column name.
 
 # Do this instead
-database = "/home/luisvaldes/workspace/ruby-workspace/akuerapp_opendata.db"
-railsDatabase = "/home/luisvaldes/workspace/ruby-workspace/akuerapp/db/development.sqlite3"
-
-# conn = sqlite3.connect(database)
-railsConn = sqlite3.connect(railsDatabase)
-# c = conn.cursor()
-railsDB = railsConn.cursor(railsConn)
-
-path = "~/workspace/ruby-workspace/data-mspbs/{file}.csv"
+path = "/home/luisvaldes/workspace/ruby-workspace/data-mspbs/{file}.{ext}"
 
 
 def import_regiones():
   # field1 => nombreRegion
   # field2 => codigoRegion
 # Rails
-  # t.string   "nombre"  
-  mapping = {
-    "nombre": "field1",
-    "id": "field2"
-  }
-  result = c.execute('select field1, field2 from establecimientos where field1 not like "nombre%" group by field1, field2 ')
+  # t.string   "nombre"
+  result = cursorSQLite3.execute('select field1, field2 from establecimientos where field1 not like "nombre%" group by field1, field2 ')
   for row in result:
-    data = (row[mapping["id"]], row[mapping["nombre"]])
-    c.execute('INSERT INTO regiones VALUES (id,nombre)', data)
+    if '' in row:
+      continue
 
-def import_distritos():
-  # field2  => codigoRegion
-  # field3  => nombreDistrito
-  # field21 => codigoDistritoSaa
+    data = {
+      "id": int(row[1]),
+      "nombre": row[0],
+      "created_at": datetime.now(),
+      "updated_at": datetime.now()
+    }
+    cursorPostgreSQL.execute("INSERT INTO regiones (id, nombre, created_at, updated_at) VALUES (%s, %s, %s, %s)", (data["id"], data["nombre"], data["created_at"], data["updated_at"]))
 
-# Rails 
-# t.integer  "region_id"
-# t.string   "region"
-# t.string   "nombre"
+# import_regiones()
 
-  result = c.execute('select field2, field3, field21 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
-  for row in result:
-    print (row)
+# def import_distritos():
+#   # field2  => codigoRegion
+#   # field3  => nombreDistrito
+#   # field21 => codigoDistritoSaa
+
+# # Rails 
+# # t.integer  "region_id"
+# # t.string   "region"
+# # t.string   "nombre"
+
+#   result = c.execute('select field2, field3, field21 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
+#   for row in result:
+#     print (row)
 
 def import_productos():
-  # tipoProducto,codigoDncp,nombre,estado,codigo,mapa,clasificadorProducto,subclasificadorProducto,
-  # concentracion,formaFarmaceutica,presentacion,codigoGrupoFarmacologico,nombreGrupoFarmacologico,
-  # codigoSubgrupoFarmacologico,nombreSubgrupoFarmacologico,tipoAdquisicion,id
-  # field1 => tipoProducto
-  # field2 => codigoDncp
-  # field3 => nombre
-  # field4 => estado
-  # field5 => codigo
-  # field6 => mapa
-  # field7 => clasificadorProducto
-  # field8 => subclasificadorProducto
-  # field9 => concentracion
-  # field10 => formaFarmaceutica
-  # field11 => presentacion
-  # field12 => codigoGrupoFarmacologico
-  # field13 => nombreGrupoFarmacologico
-  # field14 => codigoSubgrupoFarmacologico
-  # field15 => nombreSubgrupoFarmacoligico
-  # field16 => tipoAdquisicion
-  # field17 => id
-
 # Rails Schema
   # t.string   "nombre"
   # t.string   "tipo"
@@ -85,98 +85,177 @@ def import_productos():
   # t.string   "codigo_subgrupo_farmacologico"
   # t.string   "nombre_subgrupo_farmacologico"
   # t.string   "tipo_adquisicion"
-  result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17 from productos where field3 not like "nombre%"')
+  productos = path.format(file='productos', ext='json')
+  result = json.loads(open(productos).read())
   for row in result:
-    print (row)
+    if '' in row:
+      continue
+    data = {
+      "id": int(row["id"]),
+      "nombre": row["nombre"],
+      "tipo": row["tipoProducto"],
+      "codigo_dncp": row["codigo"],
+      "estado": row["estado"],
+      "codigo": row["codigo"],
+      "mapa": row["mapa"],
+      "clasificador": row["clasificadorProducto"],
+      "subclasificador": row["subclasificadorProducto"],
+      "concentracion": row["concentracion"],
+      "forma_parmaceutica": row["formaFarmaceutica"],
+      "presentacion": row["presentacion"],
+      "codigo_grupo_farmacologico": row["codigoGrupoFarmacologico"],
+      "nombre_grupo_farmacologico": row["nombreGrupoFarmacologico"],
+      "codigo_subgrupo_farmacologico": row["codigoSubgrupoFarmacologico"],
+      "nombre_subgrupo_farmacologico": row["nombreSubgrupoFarmacologico"],
+      "tipo_adquisicion": row["tipoAdquisicion"],
+      "created_at": datetime.now(),
+      "updated_at": datetime.now()
+    }
+    try:
+      print(tuple(data.values()))
+      statement = """INSERT INTO productos (id, 
+                                            nombre, 
+                                            tipo, 
+                                            codigo_dncp, 
+                                            codigo, 
+                                            mapa, 
+                                            clasificador,
+                                            subclasificador,
+                                            concentracion, 
+                                            forma_parmaceutica,
+                                            presentacion, 
+                                            codigo_grupo_farmacologico, 
+                                            nombre_grupo_farmacologico,
+                                            codigo_subgrupo_farmacologico, 
+                                            nombre_subgrupo_farmacologico,
+                                            tipo_adquisicion, 
+                                            created_at, 
+                                            updated_at) 
+                              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                                      %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+      
+      cursorPostgreSQL.execute(statement, (
+        data["id"], 
+        data["nombre"], 
+        data["tipo"], 
+        data["codigo_dncp"], 
+        data["codigo"], 
+        data["mapa"], 
+        data["clasificador"],
+        data["subclasificador"],
+        data["concentracion"], 
+        data["forma_parmaceutica"],
+        data["presentacion"], 
+        data["codigo_grupo_farmacologico"], 
+        data["nombre_grupo_farmacologico"],
+        data["codigo_subgrupo_farmacologico"], 
+        data["nombre_subgrupo_farmacologico"],
+        data["tipo_adquisicion"], 
+        data["created_at"], 
+        data["updated_at"]
+    ))
+    except Exception as e:
+      # print(data)
+      print (e)
 
-def import_establecimientos():
-  # nombreRegion,codigoRegion,nombreDistrito,nombre,tipo,direccion,telefono,responsable,
-  # dependeDe,estado,latitud,longitud,codigo,nombreMunicipio,codigoMunicipio,internet,
-  # codigoSaa,fechaActivo,fechaInactivo,nombreDistritoSaa,codigoDistritoSaa,id
-  # field1
-  # field2
-  # field3
-  # field4
-  # field5
-  # field6
-  # field7
-  # field8
-  # field9
-  # field10
-  # field11
-  # field12
-  # field13
-  # field14
-  # field15
-  # field16
-  # field17
-  # field18
-  # field19
-  # field20
-  # field21
-  # field22
-
-# Rails
-  # t.string   "nombre"
-  # t.string   "tipo"
-  # t.string   "direccion"
-  # t.string   "telefono"
-  # t.string   "responsable"
-  # t.string   "depende_de"
-  # t.string   "estado"
-  # t.float    "latitud"
-  # t.float    "longitud"
-  # t.string   "codigo"
-  # t.string   "internet"
-  # t.string   "codigo_saa"
-  # t.date     "fecha_activo"
-  # t.date     "fecha_inactivo"
-
-  result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19, field20, field21, field22 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
-  for row in result:
-    print (row)
-
-def import_disponibles():
-  # codigoProducto,nombreProducto,tipoProducto,codigoEstablecimiento,nombreEstablecimiento,tipoEstablecimiento,disponible,fecha,periodicidad,nombreRegion,codigoRegion,nombreDistrito,codigoDistrito,codigoEstablecimientoSaa,tipoIngreso,fechaUltimoMovimiento,fechaDistribucion,mapa,id
-  # field1
-  # field2
-  # field3
-  # field4
-  # field5
-  # field6
-  # field7
-  # field8
-  # field9
-  # field10
-  # field11
-  # field12
-  # field13
-  # field14
-  # field15
-  # field16
-  # field17
-  # field18
-  # field19
-
-# Rails
-  # t.integer  "producto_id"
-  # t.integer  "establecimiento_id"
-  # t.string   "disponible"
-  # t.string   "fecha"
-  # t.string   "periodicidad"
-  # t.string   "tipo_ingreso"
-  # t.string   "fecha_ultimo_movimiento"
-  # t.string   "fecha_distribucion"
-
-  result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19 from disponibilidades')
-  for row in result:
-    print (row)
+import_productos()
 
 
+# def import_establecimientos():
+#   # nombreRegion,codigoRegion,nombreDistrito,nombre,tipo,direccion,telefono,responsable,
+#   # dependeDe,estado,latitud,longitud,codigo,nombreMunicipio,codigoMunicipio,internet,
+#   # codigoSaa,fechaActivo,fechaInactivo,nombreDistritoSaa,codigoDistritoSaa,id
+#   # field1
+#   # field2
+#   # field3
+#   # field4
+#   # field5
+#   # field6
+#   # field7
+#   # field8
+#   # field9
+#   # field10
+#   # field11
+#   # field12
+#   # field13
+#   # field14
+#   # field15
+#   # field16
+#   # field17
+#   # field18
+#   # field19
+#   # field20
+#   # field21
+#   # field22
 
-def pfields(qty):
-  for i in ["# field%s" % i for i in range(1, qty)]:
-    print(i)
+# # Rails
+#   # t.string   "nombre"
+#   # t.string   "tipo"
+#   # t.string   "direccion"
+#   # t.string   "telefono"
+#   # t.string   "responsable"
+#   # t.string   "depende_de"
+#   # t.string   "estado"
+#   # t.float    "latitud"
+#   # t.float    "longitud"
+#   # t.string   "codigo"
+#   # t.string   "internet"
+#   # t.string   "codigo_saa"
+#   # t.date     "fecha_activo"
+#   # t.date     "fecha_inactivo"
 
-def pcolumns(qty):
-  print(', '.join(["field%s" % i for i in range(1, qty)]))
+#   result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19, field20, field21, field22 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
+#   for row in result:
+#     print (row)
+
+# def import_disponibles():
+#   # codigoProducto,nombreProducto,tipoProducto,codigoEstablecimiento,nombreEstablecimiento,tipoEstablecimiento,disponible,fecha,periodicidad,nombreRegion,codigoRegion,nombreDistrito,codigoDistrito,codigoEstablecimientoSaa,tipoIngreso,fechaUltimoMovimiento,fechaDistribucion,mapa,id
+#   # field1
+#   # field2
+#   # field3
+#   # field4
+#   # field5
+#   # field6
+#   # field7
+#   # field8
+#   # field9
+#   # field10
+#   # field11
+#   # field12
+#   # field13
+#   # field14
+#   # field15
+#   # field16
+#   # field17
+#   # field18
+#   # field19
+
+# # Rails
+#   # t.integer  "producto_id"
+#   # t.integer  "establecimiento_id"
+#   # t.string   "disponible"
+#   # t.string   "fecha"
+#   # t.string   "periodicidad"
+#   # t.string   "tipo_ingreso"
+#   # t.string   "fecha_ultimo_movimiento"
+#   # t.string   "fecha_distribucion"
+
+#   result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19 from disponibilidades')
+#   for row in result:
+#     print (row)
+
+
+
+# def pfields(qty):
+#   for i in ["# field%s" % i for i in range(1, qty)]:
+#     print(i)
+
+# def pcolumns(qty):
+#   print(', '.join(["field%s" % i for i in range(1, qty)]))
+
+
+
+# # createuser --interactive akuerappuser -d -P
+# # asdf1234
+# # createdb -E UNICODE -l C -T template0 akuerappdb --owner=akuerappuser
+# # psql -U akuerappuser -h localhost -W -d akuerappdb
