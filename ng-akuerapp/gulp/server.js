@@ -3,6 +3,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var exec = require('child_process').exec;
 
 var browserSync = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
@@ -46,13 +47,20 @@ browserSync.use(browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));
 
+gulp.task('rails', function() {
+    exec("rails server");
+});
+
 gulp.task('serve', ['watch'], function () {
   browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
 });
 
+gulp.task('serve:full-stack', ['rails', 'serve']);
+
 gulp.task('serve:dist', ['build'], function () {
   browserSyncInit(conf.paths.dist);
 });
+
 
 gulp.task('serve:e2e', ['inject'], function () {
   browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
