@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :establecimientos, except: [:new, :edit]
   scope '/api' do
     resources :productos, except: [:new, :edit]
     resources :regiones, except: [:new, :edit]

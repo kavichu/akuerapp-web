@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151031113636) do
+ActiveRecord::Schema.define(version: 20151031130845) do
 
   create_table "disponibles", force: :cascade do |t|
     t.integer  "producto_id"
@@ -40,15 +40,23 @@ ActiveRecord::Schema.define(version: 20151031113636) do
   add_index "distritos", ["region_id"], name: "index_distritos_on_region_id"
 
   create_table "establecimientos", force: :cascade do |t|
-    t.integer  "distrito_id"
     t.string   "nombre"
     t.string   "tipo"
-    t.string   "mapa"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "direccion"
+    t.string   "telefono"
+    t.string   "responsable"
+    t.string   "depende_de"
+    t.string   "estado"
+    t.float    "latitud"
+    t.float    "longitud"
+    t.string   "codigo"
+    t.string   "internet"
+    t.string   "codigo_saa"
+    t.date     "fecha_activo"
+    t.date     "fecha_inactivo"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
-
-  add_index "establecimientos", ["distrito_id"], name: "index_establecimientos_on_distrito_id"
 
   create_table "productos", force: :cascade do |t|
     t.string   "nombre"
