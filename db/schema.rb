@@ -13,6 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20151031130845) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "postgis"
+
   create_table "disponibles", force: :cascade do |t|
     t.integer  "producto_id"
     t.integer  "establecimiento_id"
@@ -26,18 +30,8 @@ ActiveRecord::Schema.define(version: 20151031130845) do
     t.datetime "updated_at",              null: false
   end
 
-  add_index "disponibles", ["establecimiento_id"], name: "index_disponibles_on_establecimiento_id"
-  add_index "disponibles", ["producto_id"], name: "index_disponibles_on_producto_id"
-
-  create_table "distritos", force: :cascade do |t|
-    t.integer  "region_id"
-    t.string   "region"
-    t.string   "nombre"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "distritos", ["region_id"], name: "index_distritos_on_region_id"
+  add_index "disponibles", ["establecimiento_id"], name: "index_disponibles_on_establecimiento_id", using: :btree
+  add_index "disponibles", ["producto_id"], name: "index_disponibles_on_producto_id", using: :btree
 
   create_table "establecimientos", force: :cascade do |t|
     t.string   "nombre"
@@ -84,5 +78,18 @@ ActiveRecord::Schema.define(version: 20151031130845) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "distritos", force: :cascade do |t|
+    t.belongs_to :region, index: true
+    t.string :nombre
+    t.timestamps null: false
+  end
+
+  # create_table "spatial_ref_sys", primary_key: "srid", force: :cascade do |t|
+  #   t.string  "auth_name", limit: 256
+  #   t.integer "auth_srid"
+  #   t.string  "srtext",    limit: 2048
+  #   t.string  "proj4text", limit: 2048
+  # end
 
 end

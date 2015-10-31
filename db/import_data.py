@@ -53,19 +53,31 @@ def import_regiones():
 
 # import_regiones()
 
-# def import_distritos():
-#   # field2  => codigoRegion
-#   # field3  => nombreDistrito
-#   # field21 => codigoDistritoSaa
+def import_distritos():
+  # field2  => codigoRegion
+  # field3  => nombreDistrito
+  # field21 => codigoDistritoSaa
 
-# # Rails 
-# # t.integer  "region_id"
-# # t.string   "region"
-# # t.string   "nombre"
+# Rails 
+# t.integer  "region_id"
+# t.string   "region"
+# t.string   "nombre"
 
-#   result = c.execute('select field2, field3, field21 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
-#   for row in result:
-#     print (row)
+  try:
+    statement = """select field13, field12, field11 from disponibilidades
+                  where field12 not like "nombre%"
+                 group by field11, field12, field13"""
+    result = cursorSQLite3.execute(statement)
+    for row in result:
+      if '' in row:
+        continue
+      data = (int(row[0]), row[1], int(row[2])) + (datetime.now(), datetime.now())
+      statement = """INSERT INTO distritos (id, nombre, region_id, created_at, updated_at) 
+                     VALUES (%s, %s, %s, %s, %s)"""
+      cursorPostgreSQL.execute(statement, data)
+  except Exception as e:
+    print(data)
+    print(e)
 
 def import_productos():
 # Rails Schema
@@ -232,43 +244,68 @@ def import_establecimientos():
       # print(data)
       print (e)
 
-import_establecimientos()
-# def import_disponibles():
-#   # codigoProducto,nombreProducto,tipoProducto,codigoEstablecimiento,nombreEstablecimiento,tipoEstablecimiento,disponible,fecha,periodicidad,nombreRegion,codigoRegion,nombreDistrito,codigoDistrito,codigoEstablecimientoSaa,tipoIngreso,fechaUltimoMovimiento,fechaDistribucion,mapa,id
-#   # field1
-#   # field2
-#   # field3
-#   # field4
-#   # field5
-#   # field6
-#   # field7
-#   # field8
-#   # field9
-#   # field10
-#   # field11
-#   # field12
-#   # field13
-#   # field14
-#   # field15
-#   # field16
-#   # field17
-#   # field18
-#   # field19
+# import_establecimientos()
+def import_disponibles():
+  # field1 codigoProducto
+  # field2 nombreProducto
+  # field3 tipoProducto
+  # field4 codigoEstablecimiento
+  # field5 nombreEstablecimiento
+  # field6 tipoEstablecimiento
+  # field7 disponible
+  # field8 fecha
+  # field9 periodicidad
+  # field10 nombreRegion
+  # field11 codigoRegion
+  # field12 nombreDistrito
+  # field13 codigoDistrito
+  # field14 codigoEstablecimientoSaa
+  # field15 tipoIngreso
+  # field16 fechaUltimoMovimiento
+  # field17 fechaDistribucion
+  # field18 mapa
+  # field19 id
 
-# # Rails
-#   # t.integer  "producto_id"
-#   # t.integer  "establecimiento_id"
-#   # t.string   "disponible"
-#   # t.string   "fecha"
-#   # t.string   "periodicidad"
-#   # t.string   "tipo_ingreso"
-#   # t.string   "fecha_ultimo_movimiento"
-#   # t.string   "fecha_distribucion"
+# Rails
+  # t.integer  "producto_id"
+  # t.integer  "establecimiento_id"
+  # t.string   "disponible"
+  # t.string   "fecha"
+  # t.string   "periodicidad"
+  # t.string   "tipo_ingreso"
+  # t.string   "fecha_ultimo_movimiento"
+  # t.string   "fecha_distribucion"
+  statement = """select field1, field14, field7, field8, field9, field15, field16, field17 
+                   from disponibilidades"""
+  result = cursorSQLite3.execute(statement)
+  for row in result:
+    try:
+      data = row + (datetime.now(), datetime.now())
+      print(data)
+      statement = """INSERT INTO disponibles (
+                                            producto_id,
+                                            establecimiento_id,
+                                            disponible,
+                                            fecha,
+                                            periodicidad,
+                                            tipo_ingreso,
+                                            fecha_ultimo_movimiento,
+                                            fecha_distribucion,
+                                            created_at, 
+                                            updated_at) 
+                              VALUES (%s, %s, %s, %s, %s,
+                                      %s, %s, %s, %s, %s)"""
+      
+      cursorPostgreSQL.execute(statement, data)
+    except Exception as e:
+      # print(data)
+      print (e)
 
-#   result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19 from disponibilidades')
-#   for row in result:
-#     print (row)
-
+# import_regiones()
+import_distritos()
+# import_productos()
+# import_establecimientos()
+# import_disponibles()
 
 
 # def pfields(qty):
