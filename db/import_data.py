@@ -158,56 +158,81 @@ def import_productos():
       # print(data)
       print (e)
 
-import_productos()
+# import_productos()
 
 
-# def import_establecimientos():
-#   # nombreRegion,codigoRegion,nombreDistrito,nombre,tipo,direccion,telefono,responsable,
-#   # dependeDe,estado,latitud,longitud,codigo,nombreMunicipio,codigoMunicipio,internet,
-#   # codigoSaa,fechaActivo,fechaInactivo,nombreDistritoSaa,codigoDistritoSaa,id
-#   # field1
-#   # field2
-#   # field3
-#   # field4
-#   # field5
-#   # field6
-#   # field7
-#   # field8
-#   # field9
-#   # field10
-#   # field11
-#   # field12
-#   # field13
-#   # field14
-#   # field15
-#   # field16
-#   # field17
-#   # field18
-#   # field19
-#   # field20
-#   # field21
-#   # field22
+def import_establecimientos():
 
-# # Rails
-#   # t.string   "nombre"
-#   # t.string   "tipo"
-#   # t.string   "direccion"
-#   # t.string   "telefono"
-#   # t.string   "responsable"
-#   # t.string   "depende_de"
-#   # t.string   "estado"
-#   # t.float    "latitud"
-#   # t.float    "longitud"
-#   # t.string   "codigo"
-#   # t.string   "internet"
-#   # t.string   "codigo_saa"
-#   # t.date     "fecha_activo"
-#   # t.date     "fecha_inactivo"
+# Rails
+  # t.string   "nombre"
+  # t.string   "tipo"
+  # t.string   "direccion"
+  # t.string   "telefono"
+  # t.string   "responsable"
+  # t.string   "depende_de"
+  # t.string   "estado"
+  # t.float    "latitud"
+  # t.float    "longitud"
+  # t.string   "codigo"
+  # t.string   "internet"
+  # t.string   "codigo_saa"
+  # t.date     "fecha_activo"
+  # t.date     "fecha_inactivo"
 
-#   result = c.execute('select field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13, field14, field15, field16, field17, field18, field19, field20, field21, field22 from establecimientos where field3 not like "nombre%" group by field2, field3, field21 ')
-#   for row in result:
-#     print (row)
+  establecimientos = path.format(file='establecimientos', ext='json')
+  result = json.loads(open(establecimientos).read())
+  for row in result:
+    if '' in row:
+      continue
+    data = (
+      row["id"],
+      row["nombre"],
+      row["tipo"],
+      row["direccion"],
+      row["telefono"],
+      row["responsable"],
+      row["dependeDe"],
+      row["estado"],
+      row["latitud"],
+      row["longitud"],
+      row["codigo"],
+      row["internet"],
+      row["codigoSaa"],
+      # datetime.fromtimestamp(row["fechaActivo"]),
+      # datetime.fromtimestamp(row["fechaInactivo"]),
+      datetime.now(),
+      datetime.now(),
+      datetime.now(),
+      datetime.now()
+    )
+    try:
+      print(data)
+      statement = """INSERT INTO establecimientos (id, 
+                                            nombre,
+                                            tipo,
+                                            direccion,
+                                            telefono,
+                                            responsable,
+                                            depende_de,
+                                            estado,
+                                            latitud,
+                                            longitud,
+                                            codigo,
+                                            internet,
+                                            codigo_saa,
+                                            fecha_activo,
+                                            fecha_inactivo,
+                                            created_at, 
+                                            updated_at) 
+                              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                                      %s, %s, %s, %s, %s, %s, %s, %s)"""
+      
+      cursorPostgreSQL.execute(statement, data)
+    except Exception as e:
+      # print(data)
+      print (e)
 
+import_establecimientos()
 # def import_disponibles():
 #   # codigoProducto,nombreProducto,tipoProducto,codigoEstablecimiento,nombreEstablecimiento,tipoEstablecimiento,disponible,fecha,periodicidad,nombreRegion,codigoRegion,nombreDistrito,codigoDistrito,codigoEstablecimientoSaa,tipoIngreso,fechaUltimoMovimiento,fechaDistribucion,mapa,id
 #   # field1
