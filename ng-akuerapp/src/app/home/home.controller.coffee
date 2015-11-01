@@ -9,6 +9,7 @@ angular.module 'akuerapp'
         $scope.circle = MapData.circle
         $scope.map.markers = []
         MapData.map.markers = []
+        console.log(establecimientos)
         for e in establecimientos
           m =
             id: e["id"]
@@ -19,6 +20,7 @@ angular.module 'akuerapp'
             # nombre: e["nombre"]
           $scope.map.markers.push m
         map = $scope.map.control.getGMap()
+        console.log ($scope.map.markers)
         latLonBounds = new maps.LatLngBounds()
         for e in $scope.map.markers
           lat = e["latitude"]

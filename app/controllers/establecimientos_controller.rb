@@ -11,7 +11,7 @@ class EstablecimientosController < ApplicationController
       lat = params[:lat]
       lon = params[:lon]
       distancia = params[:distancia]
-      @establecimientos = Establecimiento.close_to(lat, lon, distancia)
+      @establecimientos = Establecimiento.close_to(lat, lon, distancia )
     else
       @establecimientos = Establecimiento.all
     end

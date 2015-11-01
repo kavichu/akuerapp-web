@@ -1,7 +1,7 @@
 angular.module "akuerapp"
   .controller "DisponiblesController", ($scope, Disponible) ->
     Disponible.query().then (disponibles) ->
-      $scope.gridOptions.data = disponibles
+      $scope.gridOptions.data = disponibles.data
 
     $scope.gridOptions =
       enableFiltering: true
