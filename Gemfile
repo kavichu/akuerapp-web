@@ -6,6 +6,7 @@ gem 'rails', '4.2.3'
 gem 'rails-api'
 gem 'rspec-rails'
 gem 'active_model_serializers'
+gem 'will_paginate', '~> 3.0.6'#, :require => nil
 
 
 # To use ActiveModel has_secure_password
