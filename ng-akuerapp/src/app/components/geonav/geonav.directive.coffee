@@ -11,8 +11,7 @@ angular.module 'akuerapp'
     directive =
         restrict: 'E'
         replace: true
-        scope: {location:'='},
-        controller: "GeoNavController"
+        # scope: {location: '=', search: '='},
         templateUrl: "app/components/geonav/googleplaces.html"
         link: ($scope, elm, attrs)->
           autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {})

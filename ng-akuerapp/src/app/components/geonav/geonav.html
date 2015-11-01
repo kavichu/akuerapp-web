@@ -1,4 +1,21 @@
-<ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+<div id="map_canvas">
+  <ui-gmap-google-map 
+        center='map.center' 
+        zoom='map.zoom'
+        dragging="map.dragging"
+        bounds="map.bounds"
+        events="map.events"
+        options="map.options"
+        pan="true"
+        control="map.control"
+        >
+        <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
+        </ui-gmap-marker>
+
+        <ui-gmap-markers models="map.markers" coords="'self'">
+        </ui-gmap-markers>
+  </ui-gmap-google-map>
+</div>
 <br>
 <div class="form-group">
   <div class="row">

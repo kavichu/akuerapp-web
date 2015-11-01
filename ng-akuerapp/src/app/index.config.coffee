@@ -9,3 +9,9 @@ angular.module 'akuerapp'
     toastrConfig.positionClass = 'toast-top-right'
     toastrConfig.preventDuplicates = true
     toastrConfig.progressBar = true
+
+  .config (uiGmapGoogleMapApiProvider)->
+    uiGmapGoogleMapApiProvider.configure {
+    v: '3.20'
+    libraries: 'weather,geometry,visualization'
+    }
