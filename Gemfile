@@ -5,7 +5,9 @@ gem 'rails', '4.2.3'
 
 gem 'rails-api'
 gem 'rspec-rails'
-gem 'active_model_serializers'
+
+gem "active_model_serializers", github: "rails-api/active_model_serializers"
+gem 'responders', '~> 2.0'
 gem 'will_paginate', '~> 3.0.6'#, :require => nil
 
 

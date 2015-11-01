@@ -4,7 +4,12 @@ class EstablecimientosController < ApplicationController
   # GET /establecimientos
   # GET /establecimientos.json
   def index
-    @establecimientos = Establecimiento.all
+    if params[:location] != nil
+      puts "LOCATION" + params[:location]
+      @establecimientos = Establecimiento.findNearby
+    else
+      @establecimientos = Establecimiento.all
+    end
 
     render json: @establecimientos
   end

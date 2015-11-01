@@ -5,6 +5,9 @@ class ProductosController < ApplicationController
   # GET /productos.json
   def index
     @productos = Producto.paginate(:page => params[:page], :per_page => 25)
+    # render json: ProductoSerializer.new(@productos)
+    
+    # respond_with @productos, serializer: PaginationSerializer
     render json: @productos
   end
 
