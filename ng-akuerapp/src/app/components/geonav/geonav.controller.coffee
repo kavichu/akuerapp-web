@@ -1,8 +1,8 @@
 angular.module 'akuerapp'
-  .controller 'GeoNavController', ($rootScope, $scope, $timeout, webDevTec, toastr, Establecimiento, uiGmapGoogleMapApi, uiGmapIsReady) ->
+  .controller 'GeoNavController', ($rootScope, $scope, $timeout, webDevTec, toastr, Establecimiento, uiGmapGoogleMapApi, uiGmapIsReady, MapData) ->
     'ngInject'
 
-    $scope.distanciaSlider = 5
+    $scope.distanciaSlider = MapData.distanciaSlider
     $scope.$on "slideEnded", () ->
       $scope.circle.radius = $scope.distanciaSlider * 1000
       $scope.circle.center = $scope.map.center
@@ -10,28 +10,32 @@ angular.module 'akuerapp'
 
 
     uiGmapGoogleMapApi.then (maps)->
-      $scope.map =
-        center:
-          latitude: -25.2961916
-          longitude: -57.616991299999995
-        zoom: 8
-        control: new Object()
-        markers: []
+      $scope.map = MapData.map
+      $scope.circle = MapData.circle
+      # $scope.map =
+      #   center:
+      #     latitude: -25.2961916
+      #     longitude: -57.616991299999995
+      #   zoom: 8
+      #   control: new Object()
+      #   markers: []
+
+      # $scope.map = $scope.map
       
-      $scope.circle =
-        id: 1
-        center: 
-          latitude: -25.2961916
-          longitude: -57.616991299999995
-        radius: $scope.distanciaSlider * 1000
-        visible: true
-        stroke:
-          color: '#08B21F',
-          weight: 2,
-          opacity: 1
-        fill:
-          color: '#08B21F',
-          opacity: 0.5
+      # $scope.circle =
+      #   id: 1
+      #   center: 
+      #     latitude: -25.2961916
+      #     longitude: -57.616991299999995
+      #   radius: $scope.distanciaSlider * 1000
+      #   visible: true
+      #   stroke:
+      #     color: '#08B21F',
+      #     weight: 2,
+      #     opacity: 1
+      #   fill:
+      #     color: '#08B21F',
+      #     opacity: 0.5
       console.log($scope.circle)
 
     $scope.location = ''

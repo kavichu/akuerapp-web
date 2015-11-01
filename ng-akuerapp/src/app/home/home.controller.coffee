@@ -1,10 +1,12 @@
 angular.module 'akuerapp'
-  .controller 'HomeController', ($scope, $timeout, webDevTec, toastr, Establecimiento, uiGmapGoogleMapApi) ->
+  .controller 'HomeController', ($scope, $timeout, webDevTec, toastr, Establecimiento, uiGmapGoogleMapApi, MapData) ->
     'ngInject'
     $scope.establecimientos = []
     Establecimiento.$get('/api/establecimientos',{"location": $scope.location}).then (establecimientos) ->
       $scope.establecimientos = establecimientos
       uiGmapGoogleMapApi.then (maps)->
+        $scope.map = MapData.map
+        $scope.circle = MapData.circle
         for e in establecimientos
           m =
             id: e["id"]
