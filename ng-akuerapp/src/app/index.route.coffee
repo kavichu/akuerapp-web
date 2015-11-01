@@ -13,16 +13,39 @@ angular.module 'akuerapp'
       name: 'app'
       url: '/app'
       abstract: true
-      template: '<menu-nav></menu-nav>'
-      controller: 'AppCtrl'
+      templateUrl: 'app/main/main.html'
+      controller: 'MainController'
 
     home =
-      parent: app,
+      parent: app
       name: 'app.home'
       url: '/home'
       views:
-        "menuContent":
-          template: '<home-page></home-page>'
-          controller: 'HomeCtrl'
+        "mainContent":
+          template: '<home></home>'
+          controller: 'HomeController'
+
+    productos =
+      parent: app
+      name: 'app.productos'
+      url: '/productos'
+      views:
+        "mainContent":
+          template: '<producto-list></producto-list>'
+          controller: 'ProductosController'
+
+    disponibles =
+      parent: app
+      name: 'app.disponibles'
+      url: '/disponibles'
+      views:
+        "mainContent":
+          template: '<disponible-list></disponible-list>'
+          controller: 'DisponiblesController'
+
+    $stateProvider.state app
+    $stateProvider.state home
+    $stateProvider.state productos
+    $stateProvider.state disponibles
 
     $urlRouterProvider.otherwise '/app/home'
