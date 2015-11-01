@@ -1,16 +1,13 @@
 angular.module "akuerapp"
-  .controller "ProductosController", ($scope, Producto) ->
+  .controller "ProductosController", ($scope, Producto, uiGridConstants) ->
     Producto.query().then (productos) ->
       $scope.gridOptions.data = productos
 
     $scope.gridOptions =
+      enableFiltering: true
       paginationPageSizes: [25, 50, 75]
       paginationPageSize: 25
-      # columnDefs: [
-      #   { name: 'name' },
-      #   { name: 'gender' },
-      #   { name: 'company' }
-      # ]
+
       data: []
 
     $scope.gridOptions.onRegisterApi = (gridApi) ->

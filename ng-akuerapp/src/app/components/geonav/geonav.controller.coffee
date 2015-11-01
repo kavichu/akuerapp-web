@@ -8,6 +8,14 @@ angular.module 'akuerapp'
       $scope.circle.center = $scope.map.center
       $scope.search($scope.map.center.latitude, $scope.map.center.longitude, $scope.distanciaSlider)
 
+      $scope.windowOptions =
+        visible: false
+
+      $scope.onClick = ()->
+        $scope.windowOptions.visible = !$scope.windowOptions.visible
+
+      $scope.closeClick = () ->
+        $scope.windowOptions.visible = false
 
     uiGmapGoogleMapApi.then (maps)->
       $scope.map = MapData.map
@@ -24,7 +32,7 @@ angular.module 'akuerapp'
       
       # $scope.circle =
       #   id: 1
-      #   center: 
+      #   center:
       #     latitude: -25.2961916
       #     longitude: -57.616991299999995
       #   radius: $scope.distanciaSlider * 1000
@@ -57,6 +65,7 @@ angular.module 'akuerapp'
               longitude: e["longitud"]
               options:
                 draggable: false
+              # nombre: e["nombre"]
             $scope.map.markers.push m
 
           map = $scope.map.control.getGMap()

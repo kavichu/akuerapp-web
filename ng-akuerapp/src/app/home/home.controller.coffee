@@ -7,6 +7,7 @@ angular.module 'akuerapp'
       uiGmapGoogleMapApi.then (maps)->
         $scope.map = MapData.map
         $scope.circle = MapData.circle
+        
         for e in establecimientos
           m =
             id: e["id"]
@@ -14,6 +15,7 @@ angular.module 'akuerapp'
             longitude: e["longitud"]
             options:
               draggable: false
+            # nombre: e["nombre"]
           $scope.map.markers.push m
         map = $scope.map.control.getGMap()
         latLonBounds = new maps.LatLngBounds()
