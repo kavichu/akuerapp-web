@@ -58,6 +58,7 @@ angular.module 'akuerapp'
           map = $scope.map.control.getGMap()
           map.panTo(new maps.LatLng(lat, lon))
           $scope.map.markers = []
+          MapData.map.markers = []
           for e in establecimientos
             m =
               id: $scope.map.markers.length + 1

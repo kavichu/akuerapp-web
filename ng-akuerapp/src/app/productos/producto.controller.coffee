@@ -6,7 +6,7 @@ angular.module "akuerapp"
     $scope.gridOptions =
       enableFiltering: true
       paginationPageSizes: [25, 50, 75]
-      paginationPageSize: 25
+      paginationPageSize: 50
 
       data: []
 

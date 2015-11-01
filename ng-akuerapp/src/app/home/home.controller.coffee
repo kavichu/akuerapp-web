@@ -7,7 +7,8 @@ angular.module 'akuerapp'
       uiGmapGoogleMapApi.then (maps)->
         $scope.map = MapData.map
         $scope.circle = MapData.circle
-        
+        $scope.map.markers = []
+        MapData.map.markers = []
         for e in establecimientos
           m =
             id: e["id"]

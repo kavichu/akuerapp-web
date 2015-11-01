@@ -43,9 +43,18 @@ angular.module 'akuerapp'
           template: '<disponible-list></disponible-list>'
           controller: 'DisponiblesController'
 
+    visualizaciones =
+      parent: app
+      name: 'app.visualizaciones'
+      url: '/visualizaciones'
+      views:
+        "mainContent":
+          templateUrl: 'app/main/visualizaciones.html'
+
     $stateProvider.state app
     $stateProvider.state home
     $stateProvider.state productos
     $stateProvider.state disponibles
+    $stateProvider.state visualizaciones
 
     $urlRouterProvider.otherwise '/app/home'

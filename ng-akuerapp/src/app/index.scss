@@ -31,6 +31,17 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   height: 450px; 
 }
 
+iframe.tableau-viz {
+  min-width: 90%;
+  min-height: 800px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.grid-el{
+  min-height: 600px;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

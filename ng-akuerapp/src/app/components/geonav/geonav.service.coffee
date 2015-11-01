@@ -2,7 +2,7 @@ angular.module 'akuerapp'
   .service 'MapData', ($rootScope) ->
     'ngInject'
     
-    $rootScope.distanciaSlider = 5
+    $rootScope.distanciaSlider = 30
 
     $rootScope.map =
       center:

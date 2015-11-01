@@ -4,9 +4,9 @@ class DisponiblesController < ApplicationController
   # GET /disponibles
   # GET /disponibles.json
   def index
-    @disponibles = Disponible.all
+    @disponibles = Disponible.take(50)
 
-    render json: @disponibles
+    render json: @disponibles, include: '**'
   end
 
   # GET /disponibles/1
