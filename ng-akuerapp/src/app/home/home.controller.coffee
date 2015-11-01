@@ -7,7 +7,7 @@ angular.module 'akuerapp'
       uiGmapGoogleMapApi.then (maps)->
         for e in establecimientos
           m =
-            id: $scope.map.markers.length + 1
+            id: e["id"]
             latitude: e["latitud"]
             longitude: e["longitud"]
             options:
