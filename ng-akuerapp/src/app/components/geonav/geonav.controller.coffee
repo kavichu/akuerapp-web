@@ -53,7 +53,7 @@ angular.module 'akuerapp'
               options:
                 draggable: false
             $scope.map.markers.push m
-          console.log($scope.map.markers) 
+          console.log($scope.map.markers)
           console.log(typeof(establecimientos))
 
           map = $scope.map.control.getGMap()
@@ -68,9 +68,10 @@ angular.module 'akuerapp'
             if lat && lon
               latLng = new maps.LatLng(lat, lon)
               latLonBounds.extend(latLng)
-          map.setCenter(latLonBounds.getCenter())
-          map.fitBounds(latLonBounds)
-          # map.setZoom(12)                
+          if $scope.map.markers.length > 0
+            map.setCenter(latLonBounds.getCenter())
+            map.fitBounds(latLonBounds)
+          # map.setZoom(12)  
         # console.log establecimientos
 
 

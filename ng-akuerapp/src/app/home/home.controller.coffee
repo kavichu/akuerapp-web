@@ -32,9 +32,10 @@ angular.module 'akuerapp'
           if lat && lon
             latLng = new maps.LatLng(lat, lon)
             latLonBounds.extend(latLng)
-        map.setCenter(latLonBounds.getCenter())
-        map.fitBounds(latLonBounds)
-        map.setZoom(12)
-        # console.log(m) 
+        if $scope.map.markers.length > 0
+          map.setCenter(latLonBounds.getCenter())
+          map.fitBounds(latLonBounds)
+        # map.setZoom(12)
+        # console.log(m)
 
     return
