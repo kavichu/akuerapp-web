@@ -1,18 +1,5 @@
 angular.module 'akuerapp'
-  .factory 'producto', ($log, $http) ->
+  .factory 'Producto', ($log, $http, RailsResource) ->
     'ngInject'
-
-    getContributors = (limit=30) ->
-
-      getContributorsComplete = (response) ->
-        response.data
-
-      getContributorsFailed = (error) ->
-        $log.error 'XHR Failed for getContributors.\n' + angular.toJson(error.data, true)
-        return
-
-      $http.get(apiHost + '/contributors?per_page=' + limit).then(getContributorsComplete).catch getContributorsFailed
-
-    service =
-      apiHost: apiHost
-      getContributors: getContributors
+    class Producto extends RailsResource
+      @configure url: "/api/productos", name: "producto"
