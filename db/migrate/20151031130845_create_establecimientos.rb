@@ -10,6 +10,9 @@ class CreateEstablecimientos < ActiveRecord::Migration
       t.string :estado
       t.float :latitud
       t.float :longitud
+
+      t.st_point :lonlat, geographic: true
+
       t.string :codigo
       t.string :internet
       t.string :codigo_saa

@@ -23,8 +23,9 @@ gem 'active_model_serializers'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+gem 'activerecord-postgis-adapter'
+
 group :development, :test do
-  gem 'spring'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 

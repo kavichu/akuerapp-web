@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20151031130845) do
   add_index "disponibles", ["establecimiento_id"], name: "index_disponibles_on_establecimiento_id", using: :btree
   add_index "disponibles", ["producto_id"], name: "index_disponibles_on_producto_id", using: :btree
 
+  create_table "distritos", id: false, force: :cascade do |t|
+    t.integer  "id",         default: "nextval('distritos_id_seq'::regclass)", null: false
+    t.integer  "region_id",                                                    null: false
+    t.string   "nombre"
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
+  end
+
+  add_index "distritos", ["region_id"], name: "index_distritos_on_region_id", using: :btree
+
   create_table "establecimientos", force: :cascade do |t|
     t.string   "nombre"
     t.string   "tipo"
@@ -78,18 +88,5 @@ ActiveRecord::Schema.define(version: 20151031130845) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "distritos", force: :cascade do |t|
-    t.belongs_to :region, index: true
-    t.string :nombre
-    t.timestamps null: false
-  end
-
-  # create_table "spatial_ref_sys", primary_key: "srid", force: :cascade do |t|
-  #   t.string  "auth_name", limit: 256
-  #   t.integer "auth_srid"
-  #   t.string  "srtext",    limit: 2048
-  #   t.string  "proj4text", limit: 2048
-  # end
 
 end
