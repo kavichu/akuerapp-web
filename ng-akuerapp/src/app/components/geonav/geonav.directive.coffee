@@ -21,5 +21,5 @@ angular.module 'akuerapp'
             $scope.location = place.geometry.location.lat() + ',' + place.geometry.location.lng()
             lat = place.geometry.location.lat()
             lon = place.geometry.location.lng()
-            $scope.search(lat, lon, 10000)
+            $scope.search(lat, lon, $scope.distanciaSlider)
             $scope.$apply()

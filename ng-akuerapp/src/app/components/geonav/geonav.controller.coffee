@@ -2,6 +2,11 @@ angular.module 'akuerapp'
   .controller 'GeoNavController', ($rootScope, $scope, $timeout, webDevTec, toastr, Establecimiento, uiGmapGoogleMapApi, uiGmapIsReady) ->
     'ngInject'
 
+    $scope.distanciaSlider = 5;
+    $scope.$on "slideEnded", () ->
+      console.log("hello: " + $scope.distanciaSlider)
+      $scope.search($scope.map.center.latitude, $scope.map.center.longitude, $scope.distanciaSlider)
+
 
     uiGmapGoogleMapApi.then (maps)->
       $scope.map =
@@ -11,8 +16,8 @@ angular.module 'akuerapp'
         zoom: 8
         control: new Object()
         markers: []
-      console.log("uiGmapGoogleMapApi.then")
-      console.log($scope.map)
+      # console.log("uiGmapGoogleMapApi.then")
+      # console.log($scope.map)
 
       # $scope.marker =
       #   id: 0
@@ -27,18 +32,21 @@ angular.module 'akuerapp'
           $scope.mapBkp = inst.map
           uuid = $scope.mapBkp.uiGmap_id
           mapInstanceNumber = inst.instance
-          console.log("uiGmapIsReady")
-          console.log($scope.mapBkp)
+          # console.log("uiGmapIsReady")
+          # console.log($scope.mapBkp)
 
     $scope.location = ''
 
+    
+    
     $scope.search = (lat, lon, distance)->
+      distance = distance * 1000
       console.log lat + ", " + lon + " - " + distance
       Establecimiento.$get('/api/establecimientos', {"lat": lat, "lon": lon, "distancia": distance}).then (establecimientos) ->
         $scope.establecimientos = establecimientos
         uiGmapGoogleMapApi.then (maps)->
           map = $scope.map.control.getGMap()
-          map.panTo(new maps.LatLng(lat, lon), 5)
+          map.panTo(new maps.LatLng(lat, lon))
           # $scope.marker =
           #     coords:
           #       latitude: lat
@@ -63,8 +71,6 @@ angular.module 'akuerapp'
             # console.log(e)
             lat = e["latitude"]
             lon = e["longitude"]
-            console.log(lat)
-            console.log(lon)
             if lat && lon
               latLng = new maps.LatLng(lat, lon)
               latLonBounds.extend(latLng)
