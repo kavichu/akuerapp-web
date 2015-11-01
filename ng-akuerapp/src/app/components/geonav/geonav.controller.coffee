@@ -10,10 +10,11 @@ angular.module 'akuerapp'
 
     $scope.location = ''
   
-    $scope.search = (location)->
-      console.log location
-      Establecimiento.$get('/api/establecimientos',{"location": location}).then (establecimientos) ->
+    $scope.search = (lat, lon, distance)->
+      console.log lat + ", " + lon + " - " + distance
+      Establecimiento.$get('/api/establecimientos', {"lat": lat, "lon": lon, "distancia": distance}).then (establecimientos) ->
         $scope.establecimientos = establecimientos
         console.log establecimientos
+        
 
       return

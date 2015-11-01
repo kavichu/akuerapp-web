@@ -4,9 +4,14 @@ class EstablecimientosController < ApplicationController
   # GET /establecimientos
   # GET /establecimientos.json
   def index
-    if params[:location] != nil
-      puts "LOCATION" + params[:location]
-      @establecimientos = Establecimiento.findNearby
+    puts "params[:lat]"
+    puts params[:lat]
+    if params[:lat] != nil && params[:lon] != nil
+      puts "LOCATION" + params[:lat] + " - " + params[:lon]
+      lat = params[:lat]
+      lon = params[:lon]
+      distancia = params[:distancia]
+      @establecimientos = Establecimiento.close_to(lat, lon, distancia)
     else
       @establecimientos = Establecimiento.all
     end
