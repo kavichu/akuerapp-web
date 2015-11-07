@@ -23,3 +23,11 @@ production:
   encoding: unicode
   pool: 5
   schema_search_path: public,postgis
+
+
+development:  
+  adapter: postgis
+  url: <%= ENV['DATABASE_URL'] %>
+  encoding: unicode
+  pool: 5
+  schema_search_path: public,postgis
