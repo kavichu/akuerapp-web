@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20151031130845) do
     t.string   "estado"
     t.float    "latitud"
     t.float    "longitud"
-    t.st_point :geopos, geographic: true
+    # t.st_point :geopos, srid: 4326, geographic: true
     t.string   "codigo"
     t.string   "internet"
     t.string   "codigo_saa"
