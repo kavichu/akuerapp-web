@@ -5,7 +5,7 @@ var proxy = proxyMiddleware('/api', { target: 'http://localhost:5000' });
 
 var app = express();
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 5100));
 
 app.use(proxy);
 app.use(express.static(__dirname + '/ng-akuerapp/ng-public'));
