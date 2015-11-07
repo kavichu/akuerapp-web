@@ -8,6 +8,7 @@ require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
 
+require 'fileutils'
 
 # require "active_record/railtie"
 # require "action_controller/railtie"
@@ -38,6 +39,8 @@ module Akuerapp
     config.active_record.raise_in_transactional_callbacks = true
     # ActiveModel::Serializer.config.adapter = :json
     # ActiveModel::Serializer.config.adapter = :json_api
+
+    FileUtils.ln_s('ng-akuerapp/public', 'public')
 
     config.generators do |g|
       g.test_framework :rspec,
