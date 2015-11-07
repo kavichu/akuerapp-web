@@ -14,8 +14,6 @@ require "sprockets/railtie"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
-require 'fileutils'
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -38,8 +36,6 @@ module Akuerapp
     config.active_record.raise_in_transactional_callbacks = true
     # ActiveModel::Serializer.config.adapter = :json
     # ActiveModel::Serializer.config.adapter = :json_api
-
-    FileUtils.ln_s('ng-akuerapp/ng-dist', 'public')
 
     config.generators do |g|
       g.test_framework :rspec,
