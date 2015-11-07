@@ -40,7 +40,7 @@ module Akuerapp
     # ActiveModel::Serializer.config.adapter = :json
     # ActiveModel::Serializer.config.adapter = :json_api
 
-    FileUtils.ln_s('ng-akuerapp/public', 'public')
+    FileUtils.ln_s('ng-akuerapp/ng-dist', 'public')
 
     config.generators do |g|
       g.test_framework :rspec,
