@@ -1,2 +1,2 @@
-web: rails server -p 5000 -e production
+worker: bundle exec rails s -e production -p 5000
 web: node index.js
