@@ -2,7 +2,7 @@ var express = require('express');
 var proxyMiddleware = require('http-proxy-middleware');
 
 var proxy = proxyMiddleware('/api', { 
-  target: 'http://' + process.env.API_HOST + ':5000' 
+  target: 'http://' + (process.env.API_HOST || 'localhost') + ':5000' 
 });
 
 var app = express();
