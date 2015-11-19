@@ -10,9 +10,7 @@
   "dependencies": {
     "ejs": "2.3.3",
     "express": "4.13.3",
-    "http-proxy-middleware": "^0.9.0"
-  },
-  "devDependencies": {
+    "http-proxy-middleware": "^0.9.0",
     "estraverse": "~4.1.0",
     "gulp": "~3.9.0",
     "gulp-autoprefixer": "~3.0.2",
@@ -55,7 +53,6 @@
     "karma-ng-html2js-preprocessor": "~0.2.0",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",
-    "http-proxy-middleware": "~0.9.0",
     "chalk": "~1.1.1",
     "uglify-save-license": "~0.4.1",
     "wrench": "~1.5.8"
