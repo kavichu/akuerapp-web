@@ -1,7 +1,7 @@
 var express = require('express');
 var proxyMiddleware = require('http-proxy-middleware');
 
-if(process.env.API_PROXY_HOST){
+if(process.env.API_PROXY_HOST) {
   var proxy = proxyMiddleware('/api', { 
     target: 'http://' + process.env.API_PROXY_HOST + ':5000' 
   });
@@ -11,7 +11,10 @@ var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(proxy);
+if(process.env.API_PROXY_HOST) {
+  app.use(proxy);
+}
+
 app.use(express.static(__dirname + '/dist'));
 
 app.get('/', function(request, response) {
