@@ -4,7 +4,7 @@ var proxyMiddleware = require('http-proxy-middleware');
 var proxy = null;
 
 if(process.env.API_PROXY_HOST){
-  proxyMiddleware('/api', { 
+  proxy = proxyMiddleware('/api', { 
     target: 'http://' + (process.env.API_PROXY_HOST || 'localhost') + ':5000' 
   });
 }
