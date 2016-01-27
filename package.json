@@ -11,7 +11,9 @@
     "ejs": "2.3.3",
     "express": "4.13.3",
     "http-proxy-middleware": "^0.9.0",
-    "estraverse": "~4.1.0",
+    "estraverse": "~4.1.0"
+  },
+  "devDependencies": {
     "gulp-autoprefixer": "~3.0.2",
     "gulp-angular-templatecache": "~1.8.0",
     "del": "~2.0.2",
